@@ -2,9 +2,9 @@
 
 // Lớp cơ bản SanPham
 class SanPham {
-    public $id;
-    public $ten;
-    public $gia;
+    private $id;
+    private $ten;
+    private $gia;
 
     public function __construct($id, $ten, $gia) {
         $this->id = $id;
@@ -14,6 +14,22 @@ class SanPham {
 
     public function hienThi() {
         echo "ID: $this->id - Tên: $this->ten - Giá: $this->gia<br>";
+    }
+    function getId(){
+         return $this->id ;
+    }
+    function setTen($value){
+       return $this->ten=$value ;
+    }
+    
+    function getTen(){
+       return $this->ten ;
+    }
+    function getGia(){
+     return $this->gia ;
+    }
+    function  setGia($gia){
+      return  $this->gia= $gia;
     }
 }
 
@@ -54,12 +70,15 @@ class QuanLySanPham {
     // Thêm sản phẩm
     public function themSanPham(SanPham $sanPham) {
         $this->danhSachSanPham[] = $sanPham;
+        
     }
-
+    public function getDanhSachSanPham() {
+        return $this->danhSachSanPham;
+    }
     // Xóa sản phẩm theo ID
     public function xoaSanPham($id) {
         foreach ($this->danhSachSanPham as $key => $sanPham) {
-            if ($sanPham->id == $id) {
+            if ($sanPham->getId() == $id) {
                 unset($this->danhSachSanPham[$key]);
                 echo "Đã xóa sản phẩm ID: $id<br>";
                 return;
@@ -70,36 +89,53 @@ class QuanLySanPham {
 
     // Sửa thông tin sản phẩm
     public function suaSanPham($id, $tenMoi, $giaMoi) {
-        foreach ($this->danhSachSanPham as $sanPham) {
-            if ($sanPham->id == $id) {
-                $sanPham->ten = $tenMoi;
-                $sanPham->gia = $giaMoi;
-                echo "Đã sửa sản phẩm ID: $id<br>";
-                return;
-            }
-        }
-        echo "Không tìm thấy sản phẩm với ID: $id<br>";
+        // foreach ($this->danhSachSanPham as $sanPham) {
+        //     if ($sanPham->id == $id) {
+        //         $sanPham->ten = $tenMoi;
+        //         $sanPham->gia = $giaMoi;
+        //         echo "Đã sửa sản phẩm ID: $id<br>";
+        //         return;
+        //     }
+        // }
+    for($i=0; $i < count($this->danhSachSanPham); $i++){
+        // echo "id: $id<br>";
+        // var_dump($this->danhSachSanPham[$i]->id);
+       if ($this->danhSachSanPham[$i]->getId($id)==$id) {
+        // $this->danhsachsanpham[$i]->getid($id);
+        $this->danhSachSanPham[$i]->setTen($tenMoi);
+        $this->danhSachSanPham[$i]->setGia($giaMoi);
+        return;
+    }else   { 
+        echo "Không tìm thấy sản phẩm với ID  san: $id<br>";
     }
-
+    }}
     // Tìm kiếm sản phẩm theo tên
     public function timKiemSanPham($ten) {
-        foreach ($this->danhSachSanPham as $sanPham) {
-            if (stripos($sanPham->ten, $ten) !== false) {
-                $sanPham->hienThi();
+        // foreach ($this->danhSachSanPham as $sanPham) {
+        //     if (stripos($sanPham->getTen, $ten) !== false) {
+        //         $sanPham->hienThi();
+        //     }
+        // }
+        
+
+        for($i=0; $i <count($this->danhSachSanPham);$i++){
+            if(strpos($this->danhSachSanPham[$i]->getTen(), $ten));
+                $this->danhSachSanPham[$i]->hienThi();
+                return;
             }
-        }
     }
 
     // Sắp xếp sản phẩm theo giá
     public function sapXepSanPham() {
         usort($this->danhSachSanPham, function ($a, $b) {
-            return $a->gia - $b->gia;
+            return $a->getGia() - $b->getGia();
         });
     }
 
     // Hiển thị danh sách sản phẩm
     public function hienThiDanhSach() {
         foreach ($this->danhSachSanPham as $sanPham) {
+        //    var_dump($sanPham);
             $sanPham->hienThi();
             echo "<br>";
         }
@@ -114,11 +150,13 @@ $quanLySanPham->themSanPham(new DienThoai(1, "iPhone", 20000, "iOS"));
 $quanLySanPham->themSanPham(new Laptop(2, "MacBook", 30000, "Intel i7"));
 
 // Hiển thị danh sách sản phẩm
-echo "Danh sách sản phẩm:<br>";
-$quanLySanPham->hienThiDanhSach();
+echo "Danh sách sản phẩm `111:<br>";
 
-// Sửa sản phẩm
-$quanLySanPham->suaSanPham(1, "iPhone 13", 25000);
+// Sửa sản phẩ
+echo "suasanpham";
+$quanLySanPham->suaSanPham(1, "iPhone 15", 25000);
+echo "hienThiDanhSach";
+$quanLySanPham->hienThiDanhSach();
 
 // Tìm kiếm sản phẩm
 echo "<br>Tìm kiếm sản phẩm có tên 'Mac':<br>";
