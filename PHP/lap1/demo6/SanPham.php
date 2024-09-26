@@ -1,82 +1,100 @@
 <?php
 
 // Lớp cơ bản SanPham
-class SanPham {
+class SanPham
+{
     private $id;
     private $ten;
     private $gia;
 
-    public function __construct($id, $ten, $gia) {
+    public function __construct($id, $ten, $gia)
+    {
         $this->id = $id;
         $this->ten = $ten;
         $this->gia = $gia;
     }
 
-    public function hienThi() {
+    public function hienThi()
+    {
         echo "ID: $this->id - Tên: $this->ten - Giá: $this->gia<br>";
     }
-    function getId(){
-         return $this->id ;
+    function getId()
+    {
+        return $this->id;
     }
-    function setTen($value){
-       return $this->ten=$value ;
+    function setTen($value)
+    {
+        return $this->ten = $value;
     }
-    
-    function getTen(){
-       return $this->ten ;
+
+    function getTen()
+    {
+        return $this->ten;
     }
-    function getGia(){
-     return $this->gia ;
+    function getGia()
+    {
+        return $this->gia;
     }
-    function  setGia($gia){
-      return  $this->gia= $gia;
+    function  setGia($gia)
+    {
+        return  $this->gia = $gia;
     }
 }
 
 // Lớp DienThoai kế thừa từ SanPham
-class DienThoai extends SanPham {
+class DienThoai extends SanPham
+{
     public $heDieuHanh;
 
-    public function __construct($id, $ten, $gia, $heDieuHanh) {
+    public function __construct($id, $ten, $gia, $heDieuHanh)
+    {
         parent::__construct($id, $ten, $gia);
         $this->heDieuHanh = $heDieuHanh;
     }
 
-    public function hienThi() {
+    public function hienThi()
+    {
         parent::hienThi();
         echo "Hệ điều hành: $this->heDieuHanh<br>";
     }
 }
 
 // Lớp Laptop kế thừa từ SanPham
-class Laptop extends SanPham {
+class Laptop extends SanPham
+{
     public $cpu;
 
-    public function __construct($id, $ten, $gia, $cpu) {
+    public function __construct($id, $ten, $gia, $cpu)
+    {
         parent::__construct($id, $ten, $gia);
         $this->cpu = $cpu;
     }
 
-    public function hienThi() {
+    public function hienThi()
+    {
         parent::hienThi();
         echo "CPU: $this->cpu<br>";
     }
 }
 
 // Lớp quản lý danh sách sản phẩm
-class QuanLySanPham {
+class QuanLySanPham
+{
     private $danhSachSanPham = [];
 
     // Thêm sản phẩm
-    public function themSanPham(SanPham $sanPham) {
+    public function themSanPham(SanPham $sanPham)
+    {
         $this->danhSachSanPham[] = $sanPham;
-        
     }
-    public function getDanhSachSanPham() {
+
+    public function getDanhSachSanPham()
+    {
         return $this->danhSachSanPham;
     }
     // Xóa sản phẩm theo ID
-    public function xoaSanPham($id) {
+    public function xoaSanPham($id)
+    {
         foreach ($this->danhSachSanPham as $key => $sanPham) {
             if ($sanPham->getId() == $id) {
                 unset($this->danhSachSanPham[$key]);
@@ -88,7 +106,8 @@ class QuanLySanPham {
     }
 
     // Sửa thông tin sản phẩm
-    public function suaSanPham($id, $tenMoi, $giaMoi) {
+    public function suaSanPham($id, $tenMoi, $giaMoi)
+    {
         // foreach ($this->danhSachSanPham as $sanPham) {
         //     if ($sanPham->id == $id) {
         //         $sanPham->ten = $tenMoi;
@@ -97,45 +116,88 @@ class QuanLySanPham {
         //         return;
         //     }
         // }
-    for($i=0; $i < count($this->danhSachSanPham); $i++){
-        // echo "id: $id<br>";
-        // var_dump($this->danhSachSanPham[$i]->id);
-       if ($this->danhSachSanPham[$i]->getId($id)==$id) {
-        // $this->danhsachsanpham[$i]->getid($id);
-        $this->danhSachSanPham[$i]->setTen($tenMoi);
-        $this->danhSachSanPham[$i]->setGia($giaMoi);
-        return;
-    }else   { 
-        echo "Không tìm thấy sản phẩm với ID  san: $id<br>";
-    }
-    }}
-    // Tìm kiếm sản phẩm theo tên
-    public function timKiemSanPham($ten) {
-        // foreach ($this->danhSachSanPham as $sanPham) {
-        //     if (stripos($sanPham->getTen, $ten) !== false) {
-        //         $sanPham->hienThi();
-        //     }
-        // }
-        
-
-        for($i=0; $i <count($this->danhSachSanPham);$i++){
-            if(strpos($this->danhSachSanPham[$i]->getTen(), $ten));
-                $this->danhSachSanPham[$i]->hienThi();
+        for ($i = 0; $i < count($this->danhSachSanPham); $i++) {
+            // echo "id: $id<br>";
+            // var_dump($this->danhSachSanPham[$i]->id);
+            if ($this->danhSachSanPham[$i]->getId($id) == $id) {
+                // $this->danhsachsanpham[$i]->getid($id);
+                $this->danhSachSanPham[$i]->setTen($tenMoi);
+$this->danhSachSanPham[$i]->setGia($giaMoi);
                 return;
+            } else {
+                echo "Không tìm thấy sản phẩm với ID  san: $id<br>";
             }
+        }
     }
+
+    // Tìm kiếm sản phẩm theo tên
+    public function timKiemSanPham($ten)
+    {
+        $found = false;
+        for ($i = 0; $i < count($this->danhSachSanPham); $i++) {
+            // Sử dụng stripos để tìm chuỗi con không phân biệt hoa thường
+            if (stripos($this->danhSachSanPham[$i]->getTen(), $ten) !== false) {
+                $this->danhSachSanPham[$i]->hienThi();
+                $found = true;
+            }
+        }
+        if (!$found) {
+            echo "Không tìm thấy sản phẩm nào phù hợp với '$ten'.<br>";
+        }
+    }
+
+    public function KTSanPhambyid($id)
+    {
+        for ($i = 0; $i < count($this->danhSachSanPham); $i) {
+
+
+            if ($this->danhSachSanPham[$i]->getId() == $id) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function getSanPhambyid($id)
+    {
+        for ($i = 0; $i < count($this->danhSachSanPham); $i) {
+
+
+            if ($this->danhSachSanPham[$i]->getId() == $id) {
+                return $this->danhSachSanPham[$i];
+            }
+        }
+        return null;
+    }
+
+
 
     // Sắp xếp sản phẩm theo giá
-    public function sapXepSanPham() {
-        usort($this->danhSachSanPham, function ($a, $b) {
-            return $a->getGia() - $b->getGia();
-        });
+    // public function sapXepSanPham()
+    // {
+    //     usort($this->danhSachSanPham, function ($a, $b) {
+    //         return $a->getGia() - $b->getGia();
+    //     });
+    // }
+
+    public function sapXepSanPham($tieuChi = 'gia')
+    {
+        if ($tieuChi == 'gia') {
+            usort($this->danhSachSanPham, function ($a, $b) {
+                return $a->getGia() - $b->getGia();
+            });
+        } elseif ($tieuChi == 'ten') {
+            usort($this->danhSachSanPham, function ($a, $b) {
+                return strcmp($a->getTen(), $b->getTen());
+            });
+        }
     }
 
     // Hiển thị danh sách sản phẩm
-    public function hienThiDanhSach() {
+    public function hienThiDanhSach()
+    {
         foreach ($this->danhSachSanPham as $sanPham) {
-        //    var_dump($sanPham);
+            //    var_dump($sanPham);
             $sanPham->hienThi();
             echo "<br>";
         }
@@ -152,7 +214,7 @@ $quanLySanPham->themSanPham(new Laptop(2, "MacBook", 30000, "Intel i7"));
 // Hiển thị danh sách sản phẩm
 echo "Danh sách sản phẩm `111:<br>";
 
-// Sửa sản phẩ
+// Sửa sản phẩm
 echo "suasanpham";
 $quanLySanPham->suaSanPham(1, "iPhone 15", 25000);
 echo "hienThiDanhSach";
@@ -172,4 +234,3 @@ $quanLySanPham->xoaSanPham(2);
 echo "<br>Danh sách sản phẩm sau khi xóa:<br>";
 $quanLySanPham->hienThiDanhSach();
 
-?>
