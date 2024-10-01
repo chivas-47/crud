@@ -1,0 +1,10 @@
+table {
+    table-layout: fixed;
+    width: 100%;
+}
+
+th, td {
+    word-wrap: break-word;
+    white-space: normal;
+}
+
